@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>How do you play Would You Rather? | Would You Rather: Questions</title>
+<meta name="description" content="How to play Would You Rather on iPhone: pick a category, read the card, answer out loud. Support, categories and common questions.">
+<link rel="canonical" href="https://cmlapps.github.io/wouldyourather/">
+<meta name="theme-color" content="#F9F9FF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0E14" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cloud Motion Lab">
+<meta property="og:title" content="How do you play Would You Rather?">
+<meta property="og:description" content="Pick a category, read the card, answer out loud. Works offline, 2 to 10 players.">
+<style>
+/* ---- fallback tokens: any browser without oklch() gets a neutral, on-brand page ---- */
+:root{
+  --bg:#FBFAFC; --surface:#FFFFFF; --ink:#191920; --ink-2:#56565F;
+  --line:#E4E3E9; --accent:#1B1B22; --on-accent:#FFFFFF;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0E0E13; --surface:#17171D; --ink:#F4F4F7; --ink-2:#A9A9B3;
+    --line:#33333C; --accent:#F4F4F7; --on-accent:#0E0E13;
+  }
+}
+/* ---- the real system: one app-specific number drives every colour on the page ---- */
+@supports (color: oklch(0.5 0.1 180)){
+  :root{
+    --h:285;
+    --bg:oklch(0.985 0.010 var(--h));
+    --surface:oklch(1 0 0);
+    --ink:oklch(0.20 0.020 var(--h));
+    --ink-2:oklch(0.44 0.018 var(--h));
+    --line:oklch(0.860 0.022 var(--h));
+    --accent:oklch(0.48 0.160 var(--h));
+    --on-accent:oklch(0.99 0.005 var(--h));
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:oklch(0.165 0.014 var(--h));
+      --surface:oklch(0.205 0.016 var(--h));
+      --ink:oklch(0.965 0.006 var(--h));
+      --ink-2:oklch(0.735 0.014 var(--h));
+      --line:oklch(0.365 0.022 var(--h));
+      --accent:oklch(0.780 0.150 var(--h));
+      --on-accent:oklch(0.170 0.030 var(--h));
+    }
+  }
+}
+:root{
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --rail:24px;
+  color-scheme:light dark;
+}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.55;
+  font-optical-sizing:auto;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+}
+::selection{background:var(--accent);color:var(--on-accent)}
+a{color:inherit}
+a:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:3px;
+}
+/* the CTA is already accent-filled, so its ring is ink: a different mark, not a louder one */
+.cta:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+.doc{
+  max-width:640px;
+  margin:0 auto;
+  padding:20px 20px calc(48px + env(safe-area-inset-bottom)) 20px;
+}
+@media (min-width:600px){ .doc{padding:32px 32px 64px} }
+
+/* ---- masthead ---- */
+.masthead{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:16px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:32px;
+}
+.brand{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--ink-2);
+  text-decoration:none;
+}
+.brand:hover{color:var(--ink)}
+/* the right slot is a support jump, not a decorative genre label. This URL is the
+   App Store Support URL, so a contact route has to be reachable without scrolling. */
+.masthead .support-jump{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--ink-2);
+  text-decoration:none;
+  border-bottom:1px solid var(--line);
+}
+.masthead .support-jump:hover{color:var(--ink)}
+
+/* ---- the question: semantically first, visually second ---- */
+.q{
+  font-size:20px;
+  font-weight:590;
+  line-height:1.35;
+  letter-spacing:-0.011em;
+  color:var(--ink-2);
+  margin:0 0 12px;
+  text-wrap:balance;
+}
+/* ---- the answer: the largest type on the page, because it is why anyone is here ---- */
+.a{
+  font-size:27px;
+  font-weight:600;
+  line-height:1.26;
+  letter-spacing:-0.022em;
+  margin:0 0 28px;
+  text-wrap:pretty;
+}
+@media (min-width:600px){
+  .q{font-size:22px}
+  .a{font-size:32px;margin-bottom:32px}
+}
+
+/* ---- the one conversion event. Radii are concentric: 12 button + 14 padding = 26 card ---- */
+.get{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:14px;
+  margin-bottom:48px;
+}
+.get-app{display:flex;align-items:center;gap:12px;margin:2px 0 16px 2px}
+.get-icon{
+  width:56px;height:56px;flex:none;
+  border-radius:13px;
+  box-shadow:0 0 0 1px var(--line);
+  display:block;
+}
+.get-name{font-size:17px;font-weight:600;letter-spacing:-0.012em;line-height:1.25}
+.get-meta{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--ink-2);
+  letter-spacing:0.01em;
+  margin-top:3px;
+}
+.cta{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:54px;
+  padding:0 16px;
+  background:var(--accent);
+  color:var(--on-accent);
+  border-radius:12px;
+  font-size:clamp(15px,4.2vw,17px);
+  font-weight:700;
+  letter-spacing:-0.012em;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:transform .16s cubic-bezier(.2,.7,.2,1),filter .16s ease;
+}
+.cta:hover{filter:brightness(1.08)}
+.cta:active{transform:scale(.985)}
+
+/* ---- the rail: everything below the answer is apparatus, and hangs off one line ---- */
+.rail{
+  border-left:1px solid var(--line);
+  margin-left:7px;
+  padding-left:var(--rail);
+}
+.sec{margin-bottom:44px}
+.sec:last-child{margin-bottom:0}
+.lbl{
+  font-family:var(--mono);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:0.13em;
+  text-transform:uppercase;
+  color:var(--ink);
+  margin:0 0 16px calc(-1px - var(--rail));
+  padding:2px 0;
+  background:var(--bg);
+}
+
+/* ---- steps: numbered because the content genuinely is a sequence ---- */
+.steps{list-style:none;counter-reset:step;margin:0;padding:0}
+.steps li{position:relative;margin-bottom:20px}
+.steps li:last-child{margin-bottom:0}
+.steps li::before{
+  counter-increment:step;
+  content:counter(step);
+  position:absolute;
+  left:calc(-1px - var(--rail));
+  top:0;
+  width:var(--rail);
+  font-family:var(--mono);
+  font-size:12px;
+  font-variant-numeric:tabular-nums;
+  line-height:26px;
+  color:var(--ink-2);
+  background:var(--bg);
+}
+.steps b{display:block;font-weight:600;letter-spacing:-0.01em}
+.steps p{margin:2px 0 0;color:var(--ink-2)}
+
+/* ---- support: the address is set in full-strength ink, never in the accent.
+       Weight and colour do the work so the CTA keeps the only coloured mark ---- */
+.support{scroll-margin-top:20px}
+.support p{margin:0;color:var(--ink-2)}
+.support-mail{
+  display:inline-block;
+  margin-bottom:8px;
+  font-size:17px;
+  font-weight:600;
+  letter-spacing:-0.012em;
+  color:var(--ink);
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+}
+
+/* ---- facts ---- */
+.facts{margin:0;font-size:15px}
+.facts div{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  padding:9px 0;
+  border-bottom:1px solid var(--line);
+}
+.facts div:last-child{border-bottom:0}
+.facts dt{font-family:var(--mono);font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-2);padding-top:2px}
+.facts dd{margin:0;text-align:right}
+
+/* ---- questions: always open, no script, fully extractable ---- */
+.faq h3{
+  font-size:16px;
+  font-weight:600;
+  letter-spacing:-0.01em;
+  line-height:1.4;
+  margin:0 0 4px;
+}
+.faq p{margin:0 0 20px;color:var(--ink-2)}
+.faq p:last-child{margin-bottom:0}
+
+/* ---- footer ---- */
+.foot{
+  margin-top:48px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-family:var(--mono);
+  font-size:12px;
+  line-height:1.9;
+  color:var(--ink-2);
+}
+.foot-store{
+  display:inline-block;
+  color:var(--ink);
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+  margin-bottom:14px;
+}
+.foot-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:14px}
+.foot-links a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line)}
+.foot-links a:hover{color:var(--ink)}
+.foot-legal{letter-spacing:0.02em}
+
+/* ---- one entrance, transform only: nothing on this page is ever invisible ---- */
+@keyframes rise{from{transform:translateY(10px)}to{transform:translateY(0)}}
+.q,.a,.get{animation:rise .5s cubic-bezier(.2,.75,.25,1) both}
+.a{animation-delay:.05s}
+.get{animation-delay:.11s}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="wrap">
+
+    <section>
+      <h1 class="q">How do you play Would You Rather?</h1>
+      <p>Pick a category, read the card out loud, and everyone answers. Two impossible choices, one room, nobody gets to stay quiet. It works with two players or ten, and it works with no internet.</p>
+    </section>
+
+    <section>
+      <h2 class="lbl">How it works</h2>
+      <p>Open the app and pick a category. A card appears with two options. Read it to the room, tap your answer, and see how the group split. Then the next card. There is no timer and no score &mdash; the game is the conversation the card starts.</p>
+      <p>560 questions across 7 categories, with new questions added regularly.</p>
+    </section>
+
+    <section>
+      <h2 class="lbl">The categories</h2>
+      <p><strong>Would You Rather.</strong> Two options, one choice, no skipping.</p>
+      <p><strong>Party Classic.</strong> The ones everyone knows.</p>
+      <p><strong>Friends.</strong> For people who think they know each other.</p>
+      <p><strong>Bold.</strong> Where it gets personal.</p>
+      <p><strong>Drinking.</strong> For the pregame and the after-party.</p>
+      <p><strong>Couples.</strong> Date night, with real answers.</p>
+      <p><strong>College.</strong> Dorm rooms, roommates, and the mornings after.</p>
+    </section>
+
+    <section>
+      <h2 class="lbl">Common questions</h2>
+      <h3>Do I need internet to play?</h3>
+      <p>No. The game works fully offline. There are no accounts and no sign ups.</p>
+      <h3>How many people can play?</h3>
+      <p>Two to ten works best, but there is no hard limit. One phone is passed around or held by whoever is reading.</p>
+      <h3>What is free and what is Pro?</h3>
+      <p>Would You Rather, Party Classic and Friends are free. Pro unlocks all 7 categories, removes the cap on cards per round, and removes ads.</p>
+      <h3>How do I cancel a subscription?</h3>
+      <p>Subscriptions are managed by Apple, not by us. On your iPhone open Settings, tap your name, tap Subscriptions, choose Would You Rather and cancel there. Cancelling stops the next renewal and you keep access until the current period ends.</p>
+      <h3>I paid and the app still shows a lock.</h3>
+      <p>Tap Restore on the Pro screen first &mdash; that re-checks your Apple account. If it still shows locked, write to us with the Apple ID email you purchased under and we will sort it.</p>
+      <h3>Can I suggest a question?</h3>
+      <p>Yes. Send it to the address below. New questions go in regularly and good ones get used.</p>
+    </section>
+
+    <section>
+      <h2 class="lbl">Support</h2>
+      <a class="support-mail" href="mailto:dev@slyapp.co">dev@slyapp.co</a>
+      <p>If a category will not open, a purchase did not unlock, or you want to report a question, write to us and say what you tapped and what happened. One person reads this address and replies.</p>
+    </section>
+
+  </div>
+
+  <footer class="foot">
+    <a class="foot-store" href="https://apps.apple.com/us/app/id6759482009">Would You Rather: Questions on the App Store</a>
+    <div class="foot-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="mailto:dev@slyapp.co">Contact</a>
+      <a href="https://cmlapps.github.io/">All apps</a>
+    </div>
+    <div class="foot-legal">Cloud Motion Lab LLC, dev@slyapp.co</div>
+  </footer>
+
+</main>
+</body>
+</html>
